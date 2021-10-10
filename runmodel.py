@@ -9,8 +9,9 @@ def vismusic(song='song.wav',output='output.mp4',duration=2):
    
   cmd = f'python visualize.py --song {song} --depth 0.9 --jitter 0.65 ' \
         f'--pitch_sensitivity 200 --tempo_sensitivity 0.6 ' \
-        f'--classes 506 611 820 812 688 682 649 646 741 323 319 947 ' \
         f'--truncation 0.9 --smooth_factor 12 --batch_size 18 --duration {duration} --output_file {output}'  
+        #f'--classes 506 611 820 812 688 682 649 646 741 323 319 947 ' \
+
   args = shlex.split(cmd)      
   with Popen(args, stdout=PIPE, bufsize=1, universal_newlines=True) as p:
     for line in p.stdout:

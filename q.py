@@ -17,16 +17,17 @@ def upload_file():
    if request.method == 'POST':
       print("Received request.")
       f = request.files['file']
-      f.save(secure_filename(f.filename))
-      print("ID and filename =", f.filename)
-      job = q.enqueue(vismusic, connection=conn, id=f.filename, kwargs={
+      f.save(secure_filename(f.filename))      
+      job = q.enqueue(vismusic, connection=conn, kwargs={
             'song': f.filename,
             'duration': request.form['duration'],
-            'output': 'output/'+f.filename+'o.mp4'
+            'output': 'output/'+f.filename+'.mp4'
           })
       print("Added job.")
       print(job)
-      return 'ok'
+      job.meta['fname'] = f.filename+'.mp4'
+      job.save_meta()
+      return job.id
       
 @app.route('/jobstatus', methods = ['GET'])
 def jobstatus():
@@ -34,7 +35,8 @@ def jobstatus():
     job = Job.fetch(request.args.get('id'), connection=conn)
     print('Status: %s' % job.get_status())
     num = len(q.jobs)
-    return {'started': job.enqueued_at, 'status':job.get_status(), 'jobs':num}
+    return {'fname':job.meta['fname'], 'started': job.enqueued_at, 
+            'status':job.get_status(), 'jobs':num}
 		
 if __name__ == '__main__':
    app.run(debug = True, host='0.0.0.0')
