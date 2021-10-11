@@ -18,9 +18,16 @@ def upload_file():
       print("Received request.")
       f = request.files['file']
       f.save(secure_filename(f.filename))      
-      job = q.enqueue(vismusic, connection=conn, kwargs={
+      job = q.enqueue(vismusic, connection=conn, job_timeout='35m', kwargs={
             'song': f.filename,
             'duration': request.form['duration'],
+            'pitch': request.form['pitch'],
+            'depth': request.form['depth'],
+            'classes': request.form['classes'],
+            'tempo': request.form['tempo'],
+            'truncate': request.form['truncate'],
+            'smooth': request.form['smooth'], 
+            'jitter': request.form['jitter'],                                  
             'output': 'output/'+f.filename+'.mp4'
           })
       print("Added job.")
