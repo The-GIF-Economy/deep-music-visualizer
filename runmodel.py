@@ -20,7 +20,7 @@ def vismusic(song='song.wav',output='output.mp4',duration=2,pitch=200,tempo=0.6,
         f'--pitch_sensitivity {pitch} --tempo_sensitivity {tempo} ' \
         f'--truncation {truncate} --smooth_factor {smooth} --batch_size 18 --duration {duration} --output_file {output}'  
   if classes != None:
-    cmd += f'--classes {classes}' \
+    cmd += f'--classes "{classes}"' \
 
   args = shlex.split(cmd)      
   with Popen(args, stdout=PIPE, bufsize=1, universal_newlines=True) as p:
