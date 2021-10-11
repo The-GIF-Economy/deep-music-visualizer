@@ -21,7 +21,7 @@ def vismusic(song='song.wav',output='output.mp4',duration=2,pitch=200,tempo=0.6,
         f'--truncation {truncate} --smooth_factor {smooth} --batch_size 18 --output_file {output} '  
   if duration != '':
     cmd += f'--duration {duration} '
-  if classes != None:
+  if classes != None and classes != '':
     n = len(classes.split())
     cmd += f'--num_classes {n} --classes {classes}' \
 
